@@ -108,12 +108,10 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
   };
 
   const getRequestHeaders = (requestUrl) => {
-    if(requestUrl) {
-      if (requestUrl.headers) {
-        return requestUrl.headers;
-      } else {
-        return {}
-      }
+    if(requestUrl && requestUrl.headers) {
+      return requestUrl.headers;
+    } else {
+      return {}
     }
   }
 
