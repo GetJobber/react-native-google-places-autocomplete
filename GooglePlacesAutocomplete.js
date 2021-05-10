@@ -311,6 +311,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             key: props.query.key,
             placeid: rowData.place_id,
             language: props.query.language,
+            channel: props.query.channel,
             ...props.GooglePlacesDetailsQuery,
           }),
       );
