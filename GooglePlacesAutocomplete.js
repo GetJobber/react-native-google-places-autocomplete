@@ -496,6 +496,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
 
         setListLoaderDisplayed(false);
         if (request.status === 200) {
+          setListViewDisplayed(true);
           const responseJSON = JSON.parse(request.responseText);
           if (typeof responseJSON.predictions !== 'undefined') {
             // if (_isMounted === true) {
@@ -521,6 +522,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             }
           }
         } else {
+            setListViewDisplayed(false);
           // console.warn("google places autocomplete: request could not be completed or has been aborted");
         }
       };
