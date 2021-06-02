@@ -12,7 +12,6 @@ import React, {
 } from 'react';
 import {
   ActivityIndicator,
-  FlatList,
   Image,
   Keyboard,
   Platform,
@@ -526,7 +525,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
             }
           }
         } else {
-            setListViewDisplayed(false);
+          setListViewDisplayed(false);
           // console.warn("google places autocomplete: request could not be completed or has been aborted");
         }
       };
@@ -642,6 +641,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
           }
           onPress={() => _onPress(rowData)}
           underlayColor={props.listUnderlayColor || '#c8c7cc'}
+          key={index}
         >
           <View
             style={[
@@ -757,8 +757,10 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     }
   };
 
-  const _getFlatList = () => {
-    const keyGenerator = () => Math.random().toString(36).substr(2, 10);
+  const _getResultList = () => {
+    const emptyComponent = listLoaderDisplayed
+      ? props.listLoaderComponent
+      : stateText.length > props.minLength && props.listEmptyComponent;
 
     if (
       supportedPlatform() &&
@@ -768,30 +770,25 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
       listViewDisplayed === true
     ) {
       return (
-        <FlatList
-          nativeID='result-list-id'
-          scrollEnabled={!props.disableScroll}
+        <View
           style={[
             props.suppressDefaultStyles ? {} : defaultStyles.listView,
             props.styles.listView,
           ]}
-          data={dataSource}
-          keyExtractor={keyGenerator}
-          extraData={[dataSource, props]}
-          ItemSeparatorComponent={_renderSeparator}
-          renderItem={({ item, index }) => _renderRow(item, index)}
-          ListEmptyComponent={
-            listLoaderDisplayed
-              ? props.listLoaderComponent
-              : stateText.length > props.minLength && props.listEmptyComponent
-          }
-          ListHeaderComponent={
-            props.renderHeaderComponent &&
-            props.renderHeaderComponent(stateText)
-          }
-          ListFooterComponent={_renderPoweredLogo}
-          {...props}
-        />
+        >
+          {dataSource.length ? (
+            <>
+              {props.renderHeaderComponent &&
+                props.renderHeaderComponent(stateText)}
+              {dataSource.map((item, index) => {
+                return _renderRow(item, index);
+              })}
+              {_renderPoweredLogo()}
+            </>
+          ) : (
+            emptyComponent && emptyComponent()
+          )}
+        </View>
       );
     }
 
@@ -854,7 +851,7 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
           {_renderRightButton()}
         </View>
       )}
-      {_getFlatList()}
+      {_getResultList()}
       {props.children}
     </View>
   );
