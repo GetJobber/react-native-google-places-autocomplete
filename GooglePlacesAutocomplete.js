@@ -1,6 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
 import debounce from 'lodash.debounce';
-import PropTypes from 'prop-types';
 import Qs from 'qs';
 import React, {
   forwardRef,
@@ -68,7 +67,51 @@ const defaultStyles = {
   powered: {},
 };
 
-export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
+const defaultProps = {
+  autoFillOnNotFound: false,
+  currentLocation: false,
+  currentLocationLabel: 'Current location',
+  debounce: 0,
+  disableScroll: false,
+  enableHighAccuracyLocation: true,
+  enablePoweredByContainer: true,
+  fetchDetails: false,
+  filterReverseGeocodingByTypes: [],
+  GooglePlacesDetailsQuery: {},
+  GooglePlacesSearchQuery: {
+    rankby: 'distance',
+    type: 'restaurant',
+  },
+  GoogleReverseGeocodingQuery: {},
+  isRowScrollable: true,
+  keyboardShouldPersistTaps: 'always',
+  listUnderlayColor: '#c8c7cc',
+  listViewDisplayed: 'auto',
+  keepResultsAfterBlur: false,
+  minLength: 0,
+  nearbyPlacesAPI: 'GooglePlacesSearch',
+  numberOfLines: 1,
+  onFail: () => {},
+  onNotFound: () => {},
+  onPress: () => {},
+  onTimeout: () => console.warn('google places autocomplete: request timeout'),
+  placeholder: '',
+  predefinedPlaces: [],
+  predefinedPlacesAlwaysVisible: false,
+  query: {
+    key: 'missing api key',
+    language: 'en',
+    types: 'geocode',
+  },
+  styles: {},
+  suppressDefaultStyles: false,
+  textInputHide: false,
+  textInputProps: {},
+  timeout: 20000,
+};
+
+export const GooglePlacesAutocomplete = forwardRef((rawProps, ref) => {
+  const props = { ...defaultProps, ...rawProps };
   let _results = [];
   let _requests = [];
 
@@ -855,101 +898,5 @@ export const GooglePlacesAutocomplete = forwardRef((props, ref) => {
     </View>
   );
 });
-
-GooglePlacesAutocomplete.propTypes = {
-  autoFillOnNotFound: PropTypes.bool,
-  currentLocation: PropTypes.bool,
-  currentLocationLabel: PropTypes.string,
-  debounce: PropTypes.number,
-  disableScroll: PropTypes.bool,
-  enableHighAccuracyLocation: PropTypes.bool,
-  enablePoweredByContainer: PropTypes.bool,
-  fetchDetails: PropTypes.bool,
-  filterReverseGeocodingByTypes: PropTypes.array,
-  GooglePlacesDetailsQuery: PropTypes.object,
-  GooglePlacesSearchQuery: PropTypes.object,
-  GoogleReverseGeocodingQuery: PropTypes.object,
-  isRowScrollable: PropTypes.bool,
-  keyboardShouldPersistTaps: PropTypes.oneOf(['never', 'always', 'handled']),
-  listEmptyComponent: PropTypes.func,
-  listLoaderComponent: PropTypes.func,
-  listUnderlayColor: PropTypes.string,
-  // Must write it this way: https://stackoverflow.com/a/54290946/7180620
-  listViewDisplayed: PropTypes.oneOfType([
-    PropTypes.bool,
-    PropTypes.oneOf(['auto']),
-  ]),
-  keepResultsAfterBlur: PropTypes.bool,
-  minLength: PropTypes.number,
-  nearbyPlacesAPI: PropTypes.string,
-  numberOfLines: PropTypes.number,
-  onFail: PropTypes.func,
-  onNotFound: PropTypes.func,
-  onPress: PropTypes.func,
-  onTimeout: PropTypes.func,
-  placeholder: PropTypes.string,
-  predefinedPlaces: PropTypes.array,
-  predefinedPlacesAlwaysVisible: PropTypes.bool,
-  preProcess: PropTypes.func,
-  query: PropTypes.object,
-  renderDescription: PropTypes.func,
-  renderHeaderComponent: PropTypes.func,
-  renderLeftButton: PropTypes.func,
-  renderRightButton: PropTypes.func,
-  renderRow: PropTypes.func,
-  requestUrl: PropTypes.shape({
-    url: PropTypes.string,
-    useOnPlatform: PropTypes.oneOf(['web', 'all']),
-    headers: PropTypes.objectOf(PropTypes.string),
-  }),
-  styles: PropTypes.object,
-  suppressDefaultStyles: PropTypes.bool,
-  textInputHide: PropTypes.bool,
-  textInputProps: PropTypes.object,
-  timeout: PropTypes.number,
-};
-
-GooglePlacesAutocomplete.defaultProps = {
-  autoFillOnNotFound: false,
-  currentLocation: false,
-  currentLocationLabel: 'Current location',
-  debounce: 0,
-  disableScroll: false,
-  enableHighAccuracyLocation: true,
-  enablePoweredByContainer: true,
-  fetchDetails: false,
-  filterReverseGeocodingByTypes: [],
-  GooglePlacesDetailsQuery: {},
-  GooglePlacesSearchQuery: {
-    rankby: 'distance',
-    type: 'restaurant',
-  },
-  GoogleReverseGeocodingQuery: {},
-  isRowScrollable: true,
-  keyboardShouldPersistTaps: 'always',
-  listUnderlayColor: '#c8c7cc',
-  listViewDisplayed: 'auto',
-  keepResultsAfterBlur: false,
-  minLength: 0,
-  nearbyPlacesAPI: 'GooglePlacesSearch',
-  numberOfLines: 1,
-  onFail: () => {},
-  onNotFound: () => {},
-  onPress: () => {},
-  onTimeout: () => console.warn('google places autocomplete: request timeout'),
-  placeholder: '',
-  predefinedPlaces: [],
-  predefinedPlacesAlwaysVisible: false,
-  query: {
-    key: 'missing api key',
-    language: 'en',
-    types: 'geocode',
-  },
-  styles: {},
-  suppressDefaultStyles: false,
-  textInputHide: false,
-  textInputProps: {},
-  timeout: 20000,
-};
 
 export default { GooglePlacesAutocomplete };
