@@ -1,5 +1,5 @@
 {
-  "name": "@jobber/react-native-google-places-autocomplete",
+  "name": "@getjobber/react-native-google-places-autocomplete",
   "version": "2.4.2",
   "description": "Customizable Google Places autocomplete component for iOS and Android React-Native apps",
   "main": "GooglePlacesAutocomplete.js",
@@ -17,6 +17,9 @@
     "ios",
     "android"
   ],
+	"publishConfig": {
+		"registry": "https://npm.pkg.github.com/"
+	},
   "dependencies": {
     "lodash.debounce": "^4.0.8",
     "qs": "~6.9.1"
